@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect, type FC, type FormEvent } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { itemService } from '../services/itemService';
 import { requestService } from '../services/requestService';
 import { useAuth } from '../context/AuthContext';
-import { Item } from '../types';
+import type { Item } from '../types';
 import { MapPin, Calendar, User, Phone, ArrowLeft, CheckCircle } from 'lucide-react';
 
-const ItemDetails: React.FC = () => {
+const ItemDetails: FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { user } = useAuth();
@@ -36,7 +36,7 @@ const ItemDetails: React.FC = () => {
     }
   };
 
-  const handleClaimSubmit = async (e: React.FormEvent) => {
+  const handleClaimSubmit = async (e: FormEvent) => {
     e.preventDefault();
     if (!item || !claimProof) return;
     
@@ -112,7 +112,7 @@ const ItemDetails: React.FC = () => {
                 </div>
                 <div>
                   <p className="text-xs text-slate-400 font-semibold uppercase tracking-wider mb-0.5">Location</p>
-                  <p className="text-slate-700 font-medium">{item.location}</p>
+                  <p className="text-slate-700 font-medium">{item.location || 'N/A'}</p>
                 </div>
               </div>
               
@@ -122,7 +122,7 @@ const ItemDetails: React.FC = () => {
                 </div>
                 <div>
                   <p className="text-xs text-slate-400 font-semibold uppercase tracking-wider mb-0.5">Date</p>
-                  <p className="text-slate-700 font-medium">{new Date(item.dateLostOrFound).toLocaleDateString(undefined, { dateStyle: 'long' })}</p>
+                  <p className="text-slate-700 font-medium">{new Date(item.dateLostOrFound || (item as any).createdAt || Date.now()).toLocaleDateString(undefined, { dateStyle: 'long' })}</p>
                 </div>
               </div>
             </div>
@@ -135,7 +135,7 @@ const ItemDetails: React.FC = () => {
             <div className="space-y-4">
               <div className="flex items-center gap-3 text-slate-600">
                 <User className="w-5 h-5 text-slate-400" />
-                <span>{item.reporter?.username || 'Unknown User'}</span>
+                <span>{item.reporter?.username || (item as any).reportedBy?.username || 'Unknown User'}</span>
               </div>
               {item.contactInfo && (
                 <div className="flex items-center gap-3 text-slate-600">

@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { requestService } from '../services/requestService';
 import { useAuth } from '../context/AuthContext';
-import { Request } from '../types';
+import type { Request } from '../types';
 import { Clock, CheckCircle, XCircle } from 'lucide-react';
 
 const MyRequests: React.FC = () => {

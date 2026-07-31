@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import { useState, type FC, type FormEvent } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { authService } from '../services/authService';
 import { LogIn, AlertCircle } from 'lucide-react';
 
-const SignIn: React.FC = () => {
+const SignIn: FC = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -16,7 +16,7 @@ const SignIn: React.FC = () => {
 
   const from = location.state?.from?.pathname || '/';
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     if (!username || !password) {
       setError('Please fill in all fields');
@@ -31,7 +31,13 @@ const SignIn: React.FC = () => {
       login(data.token, data.user);
       navigate(from, { replace: true });
     } catch (err: any) {
-      setError(err.response?.data?.message || 'Failed to login. Please check your credentials.');
+      if (err.response) {
+        setError(err.response.data?.message || (typeof err.response.data === 'string' ? err.response.data : 'Login failed. Please check your credentials.'));
+      } else if (err.request) {
+        setError('Unable to connect to the backend server (http://localhost:8080). Please ensure the backend API is running.');
+      } else {
+        setError(err.message || 'Failed to login. Please try again.');
+      }
     } finally {
       setLoading(false);
     }

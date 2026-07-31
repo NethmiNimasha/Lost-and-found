@@ -1,10 +1,18 @@
-import React, { useState } from 'react';
+import { useState, type FC, type ChangeEvent, type FormEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { itemService } from '../services/itemService';
+import type { ItemStatus } from '../types';
 import { AlertCircle, PlusCircle } from 'lucide-react';
 
-const CreateItem: React.FC = () => {
-  const [formData, setFormData] = useState({
+const CreateItem: FC = () => {
+  const [formData, setFormData] = useState<{
+    name: string;
+    description: string;
+    location: string;
+    dateLostOrFound: string;
+    status: ItemStatus;
+    contactInfo: string;
+  }>({
     name: '',
     description: '',
     location: '',
@@ -16,11 +24,11 @@ const CreateItem: React.FC = () => {
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setError('');

@@ -1,5 +1,5 @@
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { User } from '../types';
+import { createContext, useContext, useState, useEffect, type ReactNode } from 'react';
+import type { User } from '../types';
 import { jwtDecode } from 'jwt-decode';
 
 interface AuthContextType {
@@ -21,15 +21,18 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     const storedToken = localStorage.getItem('token');
     const storedUser = localStorage.getItem('user');
 
-    if (storedToken && storedUser) {
+    if (storedToken) {
       try {
         const decodedToken = jwtDecode(storedToken) as any;
-        // Check if token is expired (exp is in seconds)
-        if (decodedToken.exp * 1000 < Date.now()) {
+        if (decodedToken.exp && decodedToken.exp * 1000 < Date.now()) {
           logout();
         } else {
           setToken(storedToken);
-          setUser(JSON.parse(storedUser));
+          if (storedUser && storedUser !== 'undefined') {
+            setUser(JSON.parse(storedUser));
+          } else if (decodedToken.sub) {
+            setUser({ id: 0, username: decodedToken.sub, email: '', role: 'USER' });
+          }
         }
       } catch (error) {
         logout();

@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect, type FC } from 'react';
 import { Link } from 'react-router-dom';
 import { itemService } from '../services/itemService';
-import { Item } from '../types';
+import type { Item } from '../types';
 import { Search, MapPin, Calendar, Info } from 'lucide-react';
 
-const Dashboard: React.FC = () => {
+const Dashboard: FC = () => {
   const [items, setItems] = useState<Item[]>([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState<'ALL' | 'LOST' | 'FOUND'>('ALL');

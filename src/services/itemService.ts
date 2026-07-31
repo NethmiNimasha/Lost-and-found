@@ -1,5 +1,5 @@
 import api from './api';
-import { Item } from '../types';
+import type { Item } from '../types';
 
 export const itemService = {
   getAllItems: async (): Promise<Item[]> => {
@@ -12,8 +12,16 @@ export const itemService = {
     return response.data;
   },
 
-  createItem: async (itemData: Partial<Item>): Promise<Item> => {
-    const response = await api.post('/items', itemData);
+  createItem: async (itemData: any): Promise<Item> => {
+    const payload = {
+      title: itemData.name || itemData.title,
+      name: itemData.name || itemData.title,
+      description: itemData.description,
+      location: itemData.location,
+      contactInfo: itemData.contactInfo,
+      status: itemData.status
+    };
+    const response = await api.post('/items', payload);
     return response.data;
   },
 

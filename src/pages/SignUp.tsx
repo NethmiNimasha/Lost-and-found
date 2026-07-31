@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import { useState, type FC, type ChangeEvent, type FormEvent } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { authService } from '../services/authService';
 import { UserPlus, AlertCircle } from 'lucide-react';
 
-const SignUp: React.FC = () => {
+const SignUp: FC = () => {
   const [formData, setFormData] = useState({
     username: '',
     email: '',
@@ -15,11 +15,11 @@ const SignUp: React.FC = () => {
   
   const navigate = useNavigate();
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     
     // Basic validation
@@ -51,7 +51,13 @@ const SignUp: React.FC = () => {
       // After successful signup, redirect to login
       navigate('/login', { state: { message: 'Registration successful. Please login.' } });
     } catch (err: any) {
-      setError(err.response?.data?.message || 'Failed to register. Please try again.');
+      if (err.response) {
+        setError(err.response.data?.message || (typeof err.response.data === 'string' ? err.response.data : 'Registration failed on server.'));
+      } else if (err.request) {
+        setError('Unable to connect to the backend server (http://localhost:8080). Please ensure the backend API is running.');
+      } else {
+        setError(err.message || 'Failed to register. Please try again.');
+      }
     } finally {
       setLoading(false);
     }

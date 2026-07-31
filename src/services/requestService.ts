@@ -1,5 +1,5 @@
 import api from './api';
-import { Request } from '../types';
+import type { Request } from '../types';
 
 export const requestService = {
   // Get requests for the logged-in user
