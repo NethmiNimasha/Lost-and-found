@@ -1,4 +1,4 @@
-import { useState, type FC, type FormEvent } from 'react';
+import { useState, useEffect, type FC, type FormEvent } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { authService } from '../services/authService';
@@ -13,6 +13,10 @@ const SignIn: FC = () => {
   const { login } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
+
+  useEffect(() => {
+    document.title = 'Sign In | CampusFind';
+  }, []);
 
   const from = location.state?.from?.pathname || '/';
 
@@ -44,32 +48,32 @@ const SignIn: FC = () => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-[80vh]">
-      <div className="bg-white p-8 rounded-2xl shadow-xl shadow-slate-200/50 w-full max-w-md border border-slate-100">
+    <div className="flex items-center justify-center min-h-[80vh] animate-[fade-in_0.5s_ease-out]">
+      <div className="glass-panel p-8 rounded-2xl w-full max-w-md">
         <div className="text-center mb-8">
-          <div className="bg-primary/10 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-            <LogIn className="w-8 h-8 text-primary" />
+          <div className="bg-indigo-500/20 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 border border-indigo-500/30">
+            <LogIn className="w-8 h-8 text-indigo-400" />
           </div>
-          <h2 className="text-2xl font-bold text-slate-800">Welcome Back</h2>
-          <p className="text-slate-500 mt-2">Sign in to continue to CampusFind</p>
+          <h2 className="text-3xl font-extrabold text-white">Welcome Back</h2>
+          <p className="text-slate-400 mt-2">Sign in to continue to CampusFind</p>
         </div>
 
         {error && (
-          <div className="mb-6 p-4 bg-red-50 border-l-4 border-red-500 text-red-700 rounded-r-lg flex items-start gap-3">
+          <div className="mb-6 p-4 bg-red-500/10 border border-red-500/20 text-red-400 rounded-xl flex items-start gap-3 backdrop-blur-sm">
             <AlertCircle className="w-5 h-5 shrink-0 mt-0.5" />
             <p className="text-sm">{error}</p>
           </div>
         )}
 
-        <form onSubmit={handleSubmit} className="space-y-5">
+        <form onSubmit={handleSubmit} className="space-y-6">
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-1.5" htmlFor="username">
+            <label className="block text-sm font-medium text-slate-300 mb-2" htmlFor="username">
               Username
             </label>
             <input
               id="username"
               type="text"
-              className="w-full px-4 py-2.5 rounded-lg border border-slate-300 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all"
+              className="glass-input"
               placeholder="Enter your username"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
@@ -78,13 +82,13 @@ const SignIn: FC = () => {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-1.5" htmlFor="password">
+            <label className="block text-sm font-medium text-slate-300 mb-2" htmlFor="password">
               Password
             </label>
             <input
               id="password"
               type="password"
-              className="w-full px-4 py-2.5 rounded-lg border border-slate-300 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all"
+              className="glass-input"
               placeholder="••••••••"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
@@ -95,7 +99,7 @@ const SignIn: FC = () => {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-primary hover:bg-blue-600 text-white font-semibold py-3 rounded-lg shadow-md shadow-blue-500/30 hover:shadow-lg hover:shadow-blue-500/40 transition-all active:scale-[0.98] disabled:opacity-70 disabled:cursor-not-allowed flex justify-center items-center gap-2"
+            className="w-full btn-primary flex justify-center items-center gap-2 mt-2 disabled:opacity-70 disabled:cursor-not-allowed disabled:hover:scale-100"
           >
             {loading ? (
               <span className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
@@ -105,9 +109,9 @@ const SignIn: FC = () => {
           </button>
         </form>
 
-        <div className="mt-8 text-center text-sm text-slate-500">
+        <div className="mt-8 text-center text-sm text-slate-400 border-t border-white/10 pt-6">
           Don't have an account?{' '}
-          <Link to="/register" className="text-primary font-semibold hover:underline">
+          <Link to="/register" className="text-indigo-400 font-semibold hover:text-indigo-300 hover:underline transition-all">
             Sign up here
           </Link>
         </div>

@@ -1,4 +1,4 @@
-import { useState, type FC, type ChangeEvent, type FormEvent } from 'react';
+import { useState, useEffect, type FC, type ChangeEvent, type FormEvent } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { authService } from '../services/authService';
 import { UserPlus, AlertCircle } from 'lucide-react';
@@ -14,6 +14,10 @@ const SignUp: FC = () => {
   const [loading, setLoading] = useState(false);
   
   const navigate = useNavigate();
+
+  useEffect(() => {
+    document.title = 'Sign Up | CampusFind';
+  }, []);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -64,33 +68,33 @@ const SignUp: FC = () => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-[80vh] py-8">
-      <div className="bg-white p-8 rounded-2xl shadow-xl shadow-slate-200/50 w-full max-w-md border border-slate-100">
+    <div className="flex items-center justify-center min-h-[80vh] py-8 animate-[fade-in_0.5s_ease-out]">
+      <div className="glass-panel p-8 rounded-2xl w-full max-w-md">
         <div className="text-center mb-8">
-          <div className="bg-primary/10 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-            <UserPlus className="w-8 h-8 text-primary" />
+          <div className="bg-indigo-500/20 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 border border-indigo-500/30">
+            <UserPlus className="w-8 h-8 text-indigo-400" />
           </div>
-          <h2 className="text-2xl font-bold text-slate-800">Create an Account</h2>
-          <p className="text-slate-500 mt-2">Join CampusFind to report or claim items</p>
+          <h2 className="text-3xl font-extrabold text-white">Create an Account</h2>
+          <p className="text-slate-400 mt-2">Join CampusFind to report or claim items</p>
         </div>
 
         {error && (
-          <div className="mb-6 p-4 bg-red-50 border-l-4 border-red-500 text-red-700 rounded-r-lg flex items-start gap-3">
+          <div className="mb-6 p-4 bg-red-500/10 border border-red-500/20 text-red-400 rounded-xl flex items-start gap-3 backdrop-blur-sm">
             <AlertCircle className="w-5 h-5 shrink-0 mt-0.5" />
             <p className="text-sm">{error}</p>
           </div>
         )}
 
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-5">
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-1.5" htmlFor="username">
+            <label className="block text-sm font-medium text-slate-300 mb-2" htmlFor="username">
               Username
             </label>
             <input
               id="username"
               name="username"
               type="text"
-              className="w-full px-4 py-2.5 rounded-lg border border-slate-300 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all"
+              className="glass-input"
               placeholder="Choose a username"
               value={formData.username}
               onChange={handleChange}
@@ -99,14 +103,14 @@ const SignUp: FC = () => {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-1.5" htmlFor="email">
+            <label className="block text-sm font-medium text-slate-300 mb-2" htmlFor="email">
               Email Address
             </label>
             <input
               id="email"
               name="email"
               type="email"
-              className="w-full px-4 py-2.5 rounded-lg border border-slate-300 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all"
+              className="glass-input"
               placeholder="student@institute.edu"
               value={formData.email}
               onChange={handleChange}
@@ -115,14 +119,14 @@ const SignUp: FC = () => {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-1.5" htmlFor="password">
+            <label className="block text-sm font-medium text-slate-300 mb-2" htmlFor="password">
               Password
             </label>
             <input
               id="password"
               name="password"
               type="password"
-              className="w-full px-4 py-2.5 rounded-lg border border-slate-300 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all"
+              className="glass-input"
               placeholder="Create a strong password"
               value={formData.password}
               onChange={handleChange}
@@ -131,14 +135,14 @@ const SignUp: FC = () => {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-1.5" htmlFor="confirmPassword">
+            <label className="block text-sm font-medium text-slate-300 mb-2" htmlFor="confirmPassword">
               Confirm Password
             </label>
             <input
               id="confirmPassword"
               name="confirmPassword"
               type="password"
-              className="w-full px-4 py-2.5 rounded-lg border border-slate-300 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all"
+              className="glass-input"
               placeholder="Confirm your password"
               value={formData.confirmPassword}
               onChange={handleChange}
@@ -149,7 +153,7 @@ const SignUp: FC = () => {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-primary hover:bg-blue-600 text-white font-semibold py-3 rounded-lg shadow-md shadow-blue-500/30 hover:shadow-lg hover:shadow-blue-500/40 transition-all active:scale-[0.98] disabled:opacity-70 disabled:cursor-not-allowed mt-2 flex justify-center items-center gap-2"
+            className="w-full btn-primary flex justify-center items-center gap-2 mt-4 disabled:opacity-70 disabled:cursor-not-allowed disabled:hover:scale-100"
           >
             {loading ? (
               <span className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
@@ -159,9 +163,9 @@ const SignUp: FC = () => {
           </button>
         </form>
 
-        <div className="mt-8 text-center text-sm text-slate-500">
+        <div className="mt-8 text-center text-sm text-slate-400 border-t border-white/10 pt-6">
           Already have an account?{' '}
-          <Link to="/login" className="text-primary font-semibold hover:underline">
+          <Link to="/login" className="text-indigo-400 font-semibold hover:text-indigo-300 hover:underline transition-all">
             Sign in
           </Link>
         </div>
